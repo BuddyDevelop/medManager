@@ -8,6 +8,7 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 
 const styles = {
     card: {
@@ -21,6 +22,12 @@ const styles = {
     content: {
         padding: 15,
         objectFit: "cover"
+    },
+    cardActions: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        marginTop: "16px"
     }
 };
 
@@ -48,6 +55,10 @@ class User extends Component {
                         {pesel}
                     </Typography>
                 </CardContent>
+                <CardActions className={classes.cardActions}>
+                    <Button>Medications</Button>
+                    <Button>Receipts</Button>
+                </CardActions>
             </Card>
         );
     }

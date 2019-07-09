@@ -5,9 +5,21 @@ import User from "../components/User";
 
 class home extends Component {
     state = {
-        users: null
+        users: null,
+        errors: null
     };
+
     componentDidMount() {
+        //if token does not exist, doctor has to log in to see users
+        if (!localStorage.FBToken) {
+            this.setState({
+                errors: "You are unauthorized, please log in."
+            });
+            return;
+        }
+
+        const firebaseToken = localStorage.FBToken;
+        axios.defaults.headers.common["Authorization"] = firebaseToken;
         axios
             .get("/Users")
             .then(res => {
@@ -22,13 +34,17 @@ class home extends Component {
     }
 
     render() {
+        const { errors } = this.state;
+
         let usersData = this.state.users ? (
             Object.keys(this.state.users).map(key => (
                 // <p key={key}>{this.state.users[key].email}</p>)
                 <User key={key} user={this.state.users[key]} />
             ))
-        ) : (
+        ) : errors === null ? (
             <p>Loading...</p>
+        ) : (
+            <p>{errors}</p>
         );
 
         return (
