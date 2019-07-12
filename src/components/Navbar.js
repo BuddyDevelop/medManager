@@ -38,7 +38,7 @@ class Navbar extends Component {
                         </Button>
                     )}
                     {this.props.user.authenticated && (
-                        <Button color="inherit" component={Link} to="/">
+                        <Button color="inherit" component={Link} to="/users">
                             Users
                         </Button>
                     )}
@@ -59,7 +59,7 @@ const mapStateToProps = state => ({
 
 const mapActionsToProps = { logout };
 
-Navbar.propType = {
+Navbar.propTypes = {
     logout: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired
 };

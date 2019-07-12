@@ -22,6 +22,8 @@ import home from "./pages/home";
 import login from "./pages/login";
 import signup from "./pages/signup";
 import profile from "./pages/profile";
+import medications from "./pages/medications";
+import receipts from "./pages/receipts";
 
 //componenet
 import Navbar from "./components/Navbar";
@@ -53,10 +55,16 @@ class App extends Component {
                             <Navbar />
                             <div className="container">
                                 <Switch>
-                                    <Route exact path="/" component={home} />
+                                    <Route exact path="/users" component={home} />
                                     <AuthRoute exact path="/login" component={login} />
                                     <AuthRoute exact path="/signup" component={signup} />
                                     <Route exact path="/profile" component={profile} />
+                                    <Route
+                                        exact
+                                        path="/medications/:pesel"
+                                        component={medications}
+                                    />
+                                    <Route exact path="/receipts/:pesel" component={receipts} />
                                 </Switch>
                             </div>
                         </Router>

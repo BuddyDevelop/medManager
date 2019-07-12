@@ -1,7 +1,17 @@
 import React, { Component } from "react";
-import Grid from "@material-ui/core/Grid";
+
 import axios from "axios";
 import User from "../components/User";
+
+//MUI
+import { GridList } from "@material-ui/core";
+import withStyles from "@material-ui/core/styles/withStyles";
+
+const styles = {
+    gridList: {
+        justifyContent: "center"
+    }
+};
 
 class home extends Component {
     state = {
@@ -35,6 +45,7 @@ class home extends Component {
 
     render() {
         const { errors } = this.state;
+        const { classes } = this.props;
 
         let usersData = this.state.users ? (
             Object.keys(this.state.users).map(key => (
@@ -48,15 +59,18 @@ class home extends Component {
         );
 
         return (
-            <Grid container spacing={10}>
-                <Grid item sm />
-                <Grid item sm={12}>
-                    {usersData}
-                </Grid>
-                <Grid item sm />
-            </Grid>
+            // // <Grid container spacing={10}>
+            //     {/* <Grid item sm /> */}
+            //     {/* <Grid item sm={12}> */}
+            //         // {usersData}
+            //     {/* </Grid> */}
+            //     {/* <Grid item sm /> */}
+            // // </Grid>
+            <GridList cols={5} cellHeight={"auto"} className={classes.gridList}>
+                {usersData}
+            </GridList>
         );
     }
 }
 
-export default home;
+export default withStyles(styles)(home);

@@ -1,11 +1,4 @@
-import {
-    SET_USER,
-    SET_ERRORS,
-    CLEAR_ERRORS,
-    LOADING_UI,
-    SET_UNAUTHENTICATED,
-    SET_AUTHENTICATED
-} from "../types";
+import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI, SET_UNAUTHENTICATED } from "../types";
 import axios from "axios";
 
 export const loginUser = (userData, history) => dispatch => {
@@ -20,7 +13,7 @@ export const loginUser = (userData, history) => dispatch => {
             dispatch(getUserData());
             dispatch({ type: CLEAR_ERRORS });
             //redirect to home page
-            history.push("/");
+            history.push("/users");
         })
         .catch(err => {
             dispatch({
@@ -42,7 +35,7 @@ export const signupUser = (newUserData, history) => dispatch => {
             dispatch(getUserData());
             dispatch({ type: CLEAR_ERRORS });
             //redirect to home page
-            history.push("/");
+            history.push("/users");
         })
         .catch(err => {
             dispatch({
