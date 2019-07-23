@@ -29,14 +29,14 @@ class profile extends Component {
 
     componentDidMount() {
         this.setState({
-            user: store.getState().user
+            user: store.getState().user.userData
         });
     }
 
     render() {
         const { classes } = this.props;
 
-        let profileData = this.state.user ? "asd" : <p>Loading...</p>;
+        // let profileData = this.state.user ? "asd" : <p>Loading...</p>;
         return (
             <Grid container spacing={3}>
                 <Grid item xs />

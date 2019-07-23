@@ -2,7 +2,7 @@ import { SET_USER, SET_AUTHENTICATED, SET_UNAUTHENTICATED } from "../types";
 
 const initialState = {
     authenticated: false,
-    credentials: {}
+    userData: {}
 };
 
 export default function(state = initialState, action) {

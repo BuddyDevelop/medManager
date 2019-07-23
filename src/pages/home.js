@@ -59,13 +59,6 @@ class home extends Component {
         );
 
         return (
-            // // <Grid container spacing={10}>
-            //     {/* <Grid item sm /> */}
-            //     {/* <Grid item sm={12}> */}
-            //         // {usersData}
-            //     {/* </Grid> */}
-            //     {/* <Grid item sm /> */}
-            // // </Grid>
             <GridList cols={5} cellHeight={"auto"} className={classes.gridList}>
                 {usersData}
             </GridList>
