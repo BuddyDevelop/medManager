@@ -9,6 +9,9 @@ import store from "../redux/store";
 import PropTypes from "prop-types";
 import { SET_ERRORS, CLEAR_ERRORS } from "../redux/types";
 
+//date library
+import dayjs from "dayjs";
+
 //MUI and devexpress
 import Paper from "@material-ui/core/Paper";
 import CirularProgress from "@material-ui/core/CircularProgress";
@@ -86,6 +89,7 @@ class Medications extends Component {
         this.hideDialog = this.hideDialog.bind(this);
         this.command = this.command.bind(this);
         this.saveChanges = this.saveChanges.bind(this);
+        this.changeAddedRows = this.changeAddedRows.bind(this);
     }
 
     //load user medications
@@ -98,7 +102,9 @@ class Medications extends Component {
                 //add id to every row
                 let tmp = Object.values(Object.values(res.data)[0]);
                 tmp.map((elem, index) => {
-                    elem.id = Object.getOwnPropertyNames(Object.values(res.data)[0])[index];
+                    return (elem.id = Object.getOwnPropertyNames(Object.values(res.data)[0])[
+                        index
+                    ]);
                 });
 
                 this.setState({
@@ -156,6 +162,24 @@ class Medications extends Component {
         );
     }
 
+    changeAddedRows(addedRows) {
+        const initialized = addedRows.map(row =>
+            Object.keys(row).length
+                ? row
+                : {
+                      name: "Xyzal",
+                      doseUnit: "tabl. powl. 5mg",
+                      dose: "1x dziennie",
+                      start: dayjs().format("YYYY/MM/DD"),
+                      ends: dayjs()
+                          .add(1, "month")
+                          .format("YYYY/MM/DD"),
+                      doctor: this.props.user.userData.email
+                  }
+        );
+        this.setState({ addedRows: initialized });
+    }
+
     saveChanges() {
         this.state.execute();
         this.setState({ dialogVisiblility: false, execute: () => {} });
@@ -166,15 +190,15 @@ class Medications extends Component {
         var { rows } = this.state;
 
         if (added) {
-            //update table
-            const startingAddedId = rows.length > 0 ? rows[rows.length - 1].id + 1 : 0;
-            rows = [
-                ...rows,
-                ...added.map((row, index) => ({
-                    id: startingAddedId + index,
-                    ...row
-                }))
-            ];
+            // //update table
+            // const startingAddedId = rows.length > 0 ? rows[rows.length - 1].id + 1 : 0;
+            // rows = [
+            //     ...rows,
+            //     ...added.map((row, index) => ({
+            //         id: startingAddedId + index,
+            //         ...row
+            //     }))
+            // ];
 
             //add doctor email to newly added row
             added[0].doctor = this.props.user.userData.email;
@@ -184,8 +208,11 @@ class Medications extends Component {
                 .post(`/medications/${this.props.location.state.pesel}/`, added[0])
                 .then(res => {
                     store.dispatch({ type: CLEAR_ERRORS });
+
+                    added[0].id = res.data.id;
                     this.setState({
-                        errors: {}
+                        errors: res.data.success,
+                        rows: [...rows, added[0]]
                     });
                 })
                 .catch(err => {
@@ -264,21 +291,28 @@ class Medications extends Component {
             currentPage,
             errors,
             loading,
+            addedRows,
             //
             dialogVisiblility,
             commandButtonId
         } = this.state;
 
         return (
-            <div>
+            <div style={{ textAlign: "center" }}>
                 <h1>{this.props.location.state.name}</h1>
                 {errors && (
                     <div style={{ textAlign: "center", padding: "10px" }}>
-                        {Object.entries(errors).map(([key, value]) => (
-                            <Typography key={key} variant="h6" color="error">
-                                {value}
+                        {typeof errors === "object" ? (
+                            Object.entries(errors).map(([key, value]) => (
+                                <Typography key={key} variant="h6" color="error">
+                                    {value}
+                                </Typography>
+                            ))
+                        ) : (
+                            <Typography variant="h6" color="secondary">
+                                {errors}
                             </Typography>
-                        ))}
+                        )}
                     </div>
                 )}
                 <Paper style={{ position: "relative" }}>
@@ -286,6 +320,8 @@ class Medications extends Component {
                         <EditingState
                             onCommitChanges={this.commitChanges}
                             columnExtensions={editingStateColumnExtensions} //disable editing column
+                            addedRows={addedRows}
+                            onAddedRowsChange={this.changeAddedRows} //add default values on creating new row
                         />
                         <FilteringState defaultFilters={[]} />
                         <IntegratedFiltering />

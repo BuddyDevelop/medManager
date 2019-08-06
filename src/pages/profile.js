@@ -7,14 +7,20 @@ import PropTypes from "prop-types";
 
 //MUI
 import withStyles from "@material-ui/core/styles/withStyles";
-import InputLabel from "@material-ui/core/InputLabel";
 import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import Divider from "@material-ui/core/Divider";
+import Container from "@material-ui/core/Container";
 
 const styles = {
-    userData: {
-        textAlign: "center"
+    userDataTitle: {
+        marginLeft: "-24px"
     },
-    InputLabel: {
+    userData: {
+        textAlign: "center",
+        margin: "10px auto 10px auto"
+    },
+    containerStyles: {
         margin: "10px auto 10px auto"
     }
 };
@@ -35,15 +41,66 @@ class profile extends Component {
 
     render() {
         const { classes } = this.props;
+        const dateFormat = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
 
         // let profileData = this.state.user ? "asd" : <p>Loading...</p>;
         return (
             <Grid container spacing={3}>
                 <Grid item xs />
-                <Grid item xs className={classes.userData}>
-                    <InputLabel>{this.state.user.name}</InputLabel>
-                    <InputLabel>{this.state.user.surname}</InputLabel>
-                    <InputLabel>{this.state.user.email}</InputLabel>
+                <Grid item xs>
+                    <Typography className={classes.userData} variant="h4">
+                        Profile
+                    </Typography>
+                    <Divider />
+                    <Container className={classes.containerStyles}>
+                        <Typography className={classes.userDataTitle} variant="body2">
+                            Name:
+                        </Typography>
+                        <Typography variant="h6" color="primary">
+                            {this.state.user.name}
+                        </Typography>
+                    </Container>
+                    <Divider />
+                    <Container className={classes.containerStyles}>
+                        <Typography className={classes.userDataTitle} variant="body2">
+                            Surname:
+                        </Typography>
+                        <Typography variant="h6" color="primary">
+                            {this.state.user.surname}
+                        </Typography>
+                    </Container>
+                    <Divider />
+                    <Container className={classes.containerStyles}>
+                        <Typography className={classes.userDataTitle} variant="body2">
+                            Email:
+                        </Typography>
+                        <Typography variant="h6" color="primary">
+                            {this.state.user.email}
+                        </Typography>
+                    </Container>
+                    <Divider />
+                    <Container className={classes.containerStyles}>
+                        <Typography className={classes.userDataTitle} variant="body2">
+                            License number:
+                        </Typography>
+                        <Typography variant="h6" color="primary">
+                            {this.state.user.licenseId}
+                        </Typography>
+                    </Container>
+                    <Divider />
+                    <Container className={classes.containerStyles}>
+                        <Typography className={classes.userDataTitle} variant="body2">
+                            Member since:
+                        </Typography>
+                        <Typography variant="h6" color="primary">
+                            {this.state.user.createdAt
+                                ? new Date(this.state.user.createdAt).toLocaleDateString(
+                                      "en-US",
+                                      dateFormat
+                                  )
+                                : ""}
+                        </Typography>
+                    </Container>
                 </Grid>
                 <Grid item xs />
             </Grid>

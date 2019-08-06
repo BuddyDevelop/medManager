@@ -18,7 +18,7 @@ import { getUserData, logout } from "./redux/actions/userActions";
 import jwtDecode from "jwt-decode";
 
 //pages
-import home from "./pages/home";
+import users from "./pages/users";
 import login from "./pages/login";
 import signup from "./pages/signup";
 import profile from "./pages/profile";
@@ -55,7 +55,7 @@ class App extends Component {
                             <Navbar />
                             <div className="container">
                                 <Switch>
-                                    <Route exact path="/users" component={home} />
+                                    <Route exact path="/users" component={users} />
                                     <AuthRoute exact path="/login" component={login} />
                                     <AuthRoute exact path="/signup" component={signup} />
                                     <Route exact path="/profile" component={profile} />

@@ -13,7 +13,7 @@ const styles = {
     }
 };
 
-class home extends Component {
+class users extends Component {
     state = {
         users: null,
         errors: null
@@ -39,7 +39,10 @@ class home extends Component {
                 });
             })
             .catch(err => {
-                console.log(err);
+                this.setState({
+                    errors: err
+                });
+                console.log(err.code);
             });
     }
 
@@ -55,7 +58,8 @@ class home extends Component {
         ) : errors === null ? (
             <p>Loading...</p>
         ) : (
-            <p>{errors}</p>
+            // Object.entries(errors).map(([key, value]) => <p key={key}>{value}</p>)
+            <p>Error, please log in again.</p>
         );
 
         return (
@@ -66,4 +70,4 @@ class home extends Component {
     }
 }
 
-export default withStyles(styles)(home);
+export default withStyles(styles)(users);
