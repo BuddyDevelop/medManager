@@ -114,6 +114,7 @@ class receipts extends Component {
             pageSize: 10,
             currentPage: 0,
             loading: true,
+            success: "",
             ...this.initialFormState
         };
 
@@ -227,12 +228,14 @@ class receipts extends Component {
                 this.setState({
                     ...this.initialFormState,
                     loading: false,
+                    success: res.data.success,
                     rows: [...this.state.rows, receiptData]
                 });
             })
             .catch(err => {
                 this.setState({
-                    errors: err.response.data
+                    errors: err.response.data,
+                    success: ""
                 });
             });
     };
@@ -252,7 +255,8 @@ class receipts extends Component {
             currentPage,
             dialogVisiblility,
             errors,
-            loading
+            loading,
+            success
         } = this.state;
 
         return (
@@ -266,7 +270,14 @@ class receipts extends Component {
                 >
                     Add receipt
                 </Button>
-                <Paper>
+                <div>
+                    {success && (
+                        <Typography variant="h6" color="secondary">
+                            {success}
+                        </Typography>
+                    )}
+                </div>
+                <Paper style={{ position: "relative" }}>
                     <Grid rows={rows} columns={columns}>
                         <RowDetailState />
                         <SearchState />
@@ -302,8 +313,19 @@ class receipts extends Component {
                 </Paper>
                 <Dialog open={dialogVisiblility} onClose={this.cancelDialog}>
                     <DialogTitle className={classes.textCentered}>Create receipt</DialogTitle>
-                    {errors && (
-                        <Typography className={classes.textCentered} variant="body2" color="error">
+                    {errors && typeof errors === "object" ? (
+                        Object.entries(errors).map(([key, value]) => (
+                            <Typography
+                                className={classes.textCentered}
+                                key={key}
+                                variant="h6"
+                                color="error"
+                            >
+                                {value}
+                            </Typography>
+                        ))
+                    ) : (
+                        <Typography className={classes.textCentered} variant="h6" color="error">
                             {errors}
                         </Typography>
                     )}

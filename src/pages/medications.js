@@ -238,7 +238,7 @@ class Medications extends Component {
                     })
                     .then(res => {
                         this.setState({
-                            errors: res.data
+                            errors: res.data.success
                         });
                     })
                     .catch(err => {
@@ -359,7 +359,7 @@ class Medications extends Component {
                         <DialogTitle>Save changes</DialogTitle>
                         <DialogContent>
                             <DialogContentText>
-                                <strong>{commandButtonId} mode</strong>
+                                <strong>{commandButtonId} medication</strong>
                                 <br />
                                 Are you sure you want to save changes?
                             </DialogContentText>
@@ -369,7 +369,7 @@ class Medications extends Component {
                                 Cancel
                             </Button>
                             <Button onClick={this.saveChanges} color="secondary" variant="outlined">
-                                Save
+                                {commandButtonId}
                             </Button>
                         </DialogActions>
                     </Dialog>
