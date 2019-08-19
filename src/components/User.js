@@ -52,11 +52,11 @@ class User extends Component {
         });
     };
 
-    handleReceiptsOnClick = event => {
+    handlePrescriptionsOnClick = event => {
         event.preventDefault();
 
         this.props.history.push({
-            pathname: `/receipts/${this.props.user.pesel}`,
+            pathname: `/prescriptions/${this.props.user.pesel}`,
             // search: `${this.props.user.pesel}`,
             state: { pesel: this.props.user.pesel, name: this.props.user.name }
         });
@@ -101,8 +101,8 @@ class User extends Component {
                     <Button onClick={this.handleMedicationOnClick} color="primary">
                         Medications
                     </Button>
-                    <Button onClick={this.handleReceiptsOnClick} color="primary">
-                        Receipts
+                    <Button onClick={this.handlePrescriptionsOnClick} color="primary">
+                        Prescriptions
                     </Button>
                 </CardActions>
             </Card>

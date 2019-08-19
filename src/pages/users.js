@@ -4,7 +4,7 @@ import axios from "axios";
 import User from "../components/User";
 
 //MUI
-import { GridList } from "@material-ui/core";
+import GridList from "@material-ui/core/GridList";
 import withStyles from "@material-ui/core/styles/withStyles";
 
 const styles = {

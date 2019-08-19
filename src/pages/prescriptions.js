@@ -82,7 +82,7 @@ const RowDetail = ({ row: { medications } }) => {
     return <div>{elements}</div>;
 };
 
-class receipts extends Component {
+class prescriptions extends Component {
     constructor() {
         super();
 
@@ -105,7 +105,7 @@ class receipts extends Component {
             realizeToDate: dayjs().add(1, "month"),
             columns: [
                 { name: "created", title: "Date of issue" },
-                { name: "id", title: "Receipt number" },
+                { name: "id", title: "Prescription number" },
                 { name: "doctorName", title: "Doctor" },
                 { name: "doctor", title: "Doctor email" },
                 { name: "realizeTo", title: "Date of realization to" }
@@ -120,17 +120,17 @@ class receipts extends Component {
 
         this.handleClickOpen = this.handleClickOpen.bind(this);
         this.hideDialog = this.hideDialog.bind(this);
-        this.saveReceipt = this.saveReceipt.bind(this);
+        this.savePrescription = this.savePrescription.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
         this.changeCurrentPage = currentPage => this.setState({ currentPage });
     }
 
-    //load user receipts
+    //load user prescriptions
     componentDidMount() {
         const userPesel = this.props.location.state.pesel;
 
         axios
-            .get(`/receipts/${userPesel}`)
+            .get(`/prescriptions/${userPesel}`)
             .then(res => {
                 //add id to every row
                 let tmp = Object.values(Object.values(res.data)[0]);
@@ -171,9 +171,9 @@ class receipts extends Component {
         });
     }
 
-    saveReceipt() {
+    savePrescription() {
         var paymentInputs = document.querySelectorAll('[name^="payment"]');
-        var receiptMedicationsToSave = [];
+        var prescriptionMedicationsToSave = [];
 
         //loop through textarea fields, if any does not have value display error
         document.querySelectorAll('textarea[name^="med"]').forEach((elem, index) => {
@@ -181,7 +181,7 @@ class receipts extends Component {
                 if (paymentInputs[index].value) {
                     //if value is number and is in range between 0 and 100
                     if (paymentInputs[index].value >= 0 && paymentInputs[index].value <= 100) {
-                        receiptMedicationsToSave.push({
+                        prescriptionMedicationsToSave.push({
                             medication: elem.value,
                             payment: paymentInputs[index].value
                         });
@@ -190,10 +190,10 @@ class receipts extends Component {
             }
         });
 
-        if (receiptMedicationsToSave.length === 0) {
+        if (prescriptionMedicationsToSave.length === 0) {
             this.setState({
                 errors:
-                    "At least one medication must be presented on receipt and payment has to be between 0 and 100."
+                    "At least one medication must be presented on prescription and payment has to be between 0 and 100."
             });
             return false;
         }
@@ -207,29 +207,29 @@ class receipts extends Component {
 
         let doctorFullName = this.props.user.userData.name + " " + this.props.user.userData.surname;
 
-        //data wystawienia i data realizacji do, receipt jako id z push na serwerze
-        const receiptData = {
+        //data wystawienia i data realizacji do, prescription jako id z push na serwerze
+        const prescriptionData = {
             doctor: this.props.user.userData.email,
             doctorName: doctorFullName,
             created: dayjs().format("YYYY/MM/DD"),
             realizeTo: this.state.realizeToDate.format("YYYY/MM/DD"),
-            medications: receiptMedicationsToSave
+            medications: prescriptionMedicationsToSave
         };
 
-        this.sendReceipt(receiptData);
+        this.sendPrescription(prescriptionData);
     }
 
-    sendReceipt = receiptData => {
+    sendPrescription = prescriptionData => {
         axios
-            .post(`/receipts/${this.props.location.state.pesel}/`, receiptData)
+            .post(`/prescriptions/${this.props.location.state.pesel}/`, prescriptionData)
             .then(res => {
-                receiptData.id = res.data.id;
+                prescriptionData.id = res.data.id;
 
                 this.setState({
                     ...this.initialFormState,
                     loading: false,
                     success: res.data.success,
-                    rows: [...this.state.rows, receiptData]
+                    rows: [...this.state.rows, prescriptionData]
                 });
             })
             .catch(err => {
@@ -268,7 +268,7 @@ class receipts extends Component {
                     color="secondary"
                     onClick={this.handleClickOpen}
                 >
-                    Add receipt
+                    Add prescription
                 </Button>
                 <div>
                     {success && (
@@ -312,7 +312,7 @@ class receipts extends Component {
                     </Grid>
                 </Paper>
                 <Dialog open={dialogVisiblility} onClose={this.cancelDialog}>
-                    <DialogTitle className={classes.textCentered}>Create receipt</DialogTitle>
+                    <DialogTitle className={classes.textCentered}>Create prescription</DialogTitle>
                     {errors && typeof errors === "object" ? (
                         Object.entries(errors).map(([key, value]) => (
                             <Typography
@@ -474,7 +474,11 @@ class receipts extends Component {
                         <Button onClick={this.hideDialog} color="primary" variant="outlined">
                             Cancel
                         </Button>
-                        <Button onClick={this.saveReceipt} color="secondary" variant="outlined">
+                        <Button
+                            onClick={this.savePrescription}
+                            color="secondary"
+                            variant="outlined"
+                        >
                             Save
                         </Button>
                     </DialogActions>
@@ -484,7 +488,7 @@ class receipts extends Component {
     }
 }
 
-receipts.propTypes = {
+prescriptions.propTypes = {
     classes: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired
 };
@@ -496,4 +500,4 @@ const mapStateToProps = state => ({
 export default connect(
     mapStateToProps,
     {}
-)(withRouter(withStyles(styles)(receipts)));
+)(withRouter(withStyles(styles)(prescriptions)));

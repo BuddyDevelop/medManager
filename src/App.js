@@ -23,7 +23,7 @@ import login from "./pages/login";
 import signup from "./pages/signup";
 import profile from "./pages/profile";
 import medications from "./pages/medications";
-import receipts from "./pages/receipts";
+import prescriptions from "./pages/prescriptions";
 
 //componenet
 import Navbar from "./components/Navbar";
@@ -64,7 +64,11 @@ class App extends Component {
                                         path="/medications/:pesel"
                                         component={medications}
                                     />
-                                    <Route exact path="/receipts/:pesel" component={receipts} />
+                                    <Route
+                                        exact
+                                        path="/prescriptions/:pesel"
+                                        component={prescriptions}
+                                    />
                                 </Switch>
                             </div>
                         </Router>
