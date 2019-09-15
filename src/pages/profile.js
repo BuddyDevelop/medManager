@@ -12,6 +12,9 @@ import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import Container from "@material-ui/core/Container";
 
+//Translations
+import i18next from "i18next";
+
 const styles = {
     userDataTitle: {
         marginLeft: "-24px"
@@ -49,12 +52,12 @@ class profile extends Component {
                 <Grid item xs />
                 <Grid item xs>
                     <Typography className={classes.userData} variant="h4">
-                        Profile
+                        {i18next.t("Profile")}
                     </Typography>
                     <Divider />
                     <Container className={classes.containerStyles}>
                         <Typography className={classes.userDataTitle} variant="body2">
-                            Name:
+                            {i18next.t("ColumnMedName")}:
                         </Typography>
                         <Typography variant="h6" color="primary">
                             {this.state.user.name}
@@ -63,7 +66,7 @@ class profile extends Component {
                     <Divider />
                     <Container className={classes.containerStyles}>
                         <Typography className={classes.userDataTitle} variant="body2">
-                            Surname:
+                            {i18next.t("Surname")}:
                         </Typography>
                         <Typography variant="h6" color="primary">
                             {this.state.user.surname}
@@ -81,7 +84,7 @@ class profile extends Component {
                     <Divider />
                     <Container className={classes.containerStyles}>
                         <Typography className={classes.userDataTitle} variant="body2">
-                            License number:
+                            {i18next.t("License number")}:
                         </Typography>
                         <Typography variant="h6" color="primary">
                             {this.state.user.licenseId}
@@ -90,7 +93,7 @@ class profile extends Component {
                     <Divider />
                     <Container className={classes.containerStyles}>
                         <Typography className={classes.userDataTitle} variant="body2">
-                            Member since:
+                            {i18next.t("Member since")}:
                         </Typography>
                         <Typography variant="h6" color="primary">
                             {this.state.user.createdAt

@@ -40,6 +40,10 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Typography from "@material-ui/core/Typography";
 
+//translations
+import i18next from "i18next";
+import { withTranslation } from "react-i18next";
+
 const getRowId = row => row.id.toString();
 
 const HiddenButtonsCell = props => {
@@ -60,12 +64,12 @@ class Medications extends Component {
 
         this.state = {
             columns: [
-                { name: "name", title: "Name" },
-                { name: "doseUnit", title: "Dose unit" },
-                { name: "dose", title: "Dose" },
-                { name: "start", title: "Medication start" },
-                { name: "ends", title: "Medication ends" },
-                { name: "doctor", title: "Added by" }
+                { name: "name", title: i18next.t("ColumnMedName") },
+                { name: "doseUnit", title: i18next.t("ColumnDoseUnit") },
+                { name: "dose", title: i18next.t("ColumnDose") },
+                { name: "start", title: i18next.t("ColumnMedicationStart") },
+                { name: "ends", title: i18next.t("ColumnMedicationEnds") },
+                { name: "doctor", title: i18next.t("ColumnAddedBy") }
             ],
             editingStateColumnExtensions: [{ columnName: "doctor", editingEnabled: false }],
             rows: [],
@@ -80,7 +84,20 @@ class Medications extends Component {
             rowChanges: {},
             execute: () => {},
             dialogVisiblility: false,
-            commandButtonId: ""
+            commandButtonId: "",
+            editColumnMessages: {
+                addCommand: i18next.t("AddMedicationBtn"),
+                editCommand: i18next.t("EditMedicationBtn"),
+                deleteCommand: i18next.t("DeleteMedicationBtn"),
+                commitCommand: i18next.t("SaveMedicationBtn"),
+                cancelCommand: i18next.t("CancelMedicationBtn")
+            },
+            tableMessages: {
+                noData: i18next.t("No data")
+            },
+            filterRowMessages: {
+                filterPlaceholder: i18next.t("FilterInputLabel")
+            }
         };
 
         this.changeCurrentPage = currentPage => this.setState({ currentPage });
@@ -140,7 +157,7 @@ class Medications extends Component {
                 <TableEditColumn.Command
                     onExecute={e => {
                         this.setState({
-                            commandButtonId: id,
+                            commandButtonId: i18next.t("DeleteButton"), //was id
                             dialogVisiblility: true,
                             execute: onExecute
                         });
@@ -153,7 +170,10 @@ class Medications extends Component {
         return (
             <TableEditColumn.Command
                 onExecute={e => {
-                    this.setState({ commandButtonId: id }); //add/edit actions
+                    this.setState({
+                        commandButtonId:
+                            id === "add" ? i18next.t("AddButton") : i18next.t("EditButton")
+                    }); //add/edit actions
                     onExecute(e);
                 }}
                 id={id}
@@ -168,8 +188,8 @@ class Medications extends Component {
                 ? row
                 : {
                       name: "Xyzal",
-                      doseUnit: "tabl. powl. 5mg",
-                      dose: "1x dziennie",
+                      doseUnit: "tablet 5mg",
+                      dose: "1 daily",
                       start: dayjs().format("YYYY/MM/DD"),
                       ends: dayjs()
                           .add(1, "month")
@@ -294,7 +314,10 @@ class Medications extends Component {
             addedRows,
             //
             dialogVisiblility,
-            commandButtonId
+            commandButtonId,
+            filterRowMessages, //filter input label text
+            editColumnMessages, //row's buttons names,
+            tableMessages //no data msg
         } = this.state;
 
         return (
@@ -332,9 +355,9 @@ class Medications extends Component {
                             onPageSizeChange={this.changePageSize}
                         />
                         <IntegratedPaging />
-                        <Table />
+                        <Table messages={tableMessages} />
                         <TableHeaderRow />
-                        <TableFilterRow />
+                        <TableFilterRow messages={filterRowMessages} />
                         <TableEditRow />
                         <TableEditColumn
                             showAddCommand
@@ -342,6 +365,7 @@ class Medications extends Component {
                             showEditCommand
                             showDeleteCommand
                             commandComponent={this.command}
+                            messages={editColumnMessages}
                         />
                         <PagingPanel />
                         <div
@@ -356,17 +380,19 @@ class Medications extends Component {
                         </div>
                     </Grid>
                     <Dialog open={dialogVisiblility} onClose={this.cancelDelete}>
-                        <DialogTitle>Save changes</DialogTitle>
+                        <DialogTitle>{i18next.t("Save changes dialog title")}</DialogTitle>
                         <DialogContent>
                             <DialogContentText>
-                                <strong>{commandButtonId} medication</strong>
+                                <strong>
+                                    {commandButtonId} {i18next.t("Medication")}
+                                </strong>
                                 <br />
-                                Are you sure you want to save changes?
+                                {i18next.t("Save changes")}
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions>
                             <Button onClick={this.hideDialog} color="primary" variant="outlined">
-                                Cancel
+                                {i18next.t("CancelButton")}
                             </Button>
                             <Button onClick={this.saveChanges} color="secondary" variant="outlined">
                                 {commandButtonId}
@@ -389,7 +415,9 @@ const mapStateToProps = state => ({
     UI: state.UI
 });
 
-export default connect(
-    mapStateToProps,
-    {}
-)(withRouter(Medications));
+export default withTranslation()(
+    connect(
+        mapStateToProps,
+        {}
+    )(withRouter(Medications))
+);

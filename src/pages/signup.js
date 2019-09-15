@@ -14,6 +14,10 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import CirularProgress from "@material-ui/core/CircularProgress";
 
+//Translations
+import i18next from "i18next";
+import { Trans } from "react-i18next";
+
 const styles = {
     form: {
         textAlign: "center"
@@ -93,7 +97,7 @@ class signup extends Component {
                 <Grid item sm />
                 <Grid item sm>
                     <Typography variant="h4" className={classes.pageTitle}>
-                        Signup
+                        {i18next.t("Signup title")}
                     </Typography>
                     <form noValidate onSubmit={this.handleSubmit}>
                         <TextField
@@ -104,7 +108,7 @@ class signup extends Component {
                             id="name"
                             name="name"
                             type="name"
-                            label="Name"
+                            label={i18next.t("Name")}
                             value={this.state.name}
                             onChange={this.handleChange}
                         />
@@ -116,7 +120,7 @@ class signup extends Component {
                             id="surname"
                             name="surname"
                             type="surname"
-                            label="Surname"
+                            label={i18next.t("Surname")}
                             value={this.state.surname}
                             onChange={this.handleChange}
                         />
@@ -128,7 +132,7 @@ class signup extends Component {
                             id="licenseId"
                             name="licenseId"
                             type="licenseId"
-                            label="License number"
+                            label={i18next.t("License number")}
                             value={this.state.licenseId}
                             onChange={this.handleChange}
                         />
@@ -152,7 +156,7 @@ class signup extends Component {
                             id="password"
                             name="password"
                             type="password"
-                            label="Password"
+                            label={i18next.t("Password")}
                             value={this.state.password}
                             onChange={this.handleChange}
                         />
@@ -164,7 +168,7 @@ class signup extends Component {
                             id="confirmPassword"
                             name="confirmPassword"
                             type="password"
-                            label="Confirm password"
+                            label={i18next.t("Confirm password")}
                             value={this.state.confirmPassword}
                             onChange={this.handleChange}
                         />
@@ -180,13 +184,16 @@ class signup extends Component {
                             color="primary"
                             disabled={loading}
                         >
-                            Signup
+                            {i18next.t("Signup")}
                             {loading && <CirularProgress className={classes.progress} size={30} />}
                         </Button>
                     </form>
                     <br />
                     <small>
-                        Already have an accout? Login <Link to="/login">here</Link>
+                        <Trans i18nKey="LoginLink">
+                            <Link to="/login">here</Link>
+                        </Trans>
+                        {/* Already have an accout? Login <Link to="/login">here</Link> */}
                     </small>
                 </Grid>
                 <Grid item sm />

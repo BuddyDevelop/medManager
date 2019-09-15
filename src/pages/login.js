@@ -14,6 +14,9 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import CirularProgress from "@material-ui/core/CircularProgress";
 
+import { Translation, Trans } from "react-i18next";
+import i18next from "i18next";
+
 //ui styles
 const styles = {
     form: {
@@ -82,7 +85,7 @@ class login extends Component {
                 <Grid item sm />
                 <Grid item sm>
                     <Typography variant="h4" className={classes.pageTitle}>
-                        Login
+                        <Translation>{(t, { i18n }) => <span>{t("LoginTitle")}</span>}</Translation>
                     </Typography>
                     <form noValidate onSubmit={this.handleSubmit}>
                         <TextField
@@ -105,7 +108,7 @@ class login extends Component {
                             id="password"
                             name="password"
                             type="password"
-                            label="Password"
+                            label={i18next.t("Password")}
                             value={this.state.password}
                             onChange={this.handleChange}
                         />
@@ -121,13 +124,16 @@ class login extends Component {
                             color="primary"
                             disabled={loading}
                         >
-                            Login
+                            <Translation>{(t, { i18n }) => <span>{t("Login")}</span>}</Translation>
                             {loading && <CirularProgress className={classes.progress} size={30} />}
                         </Button>
                     </form>
                     <br />
                     <small>
-                        Do not have accout? Sign up <Link to="/signup">here</Link>
+                        {/* Do not have accout? Sign up <Link to="/signup">here</Link> */}
+                        <Trans i18nKey="RegisterLink">
+                            <Link to="/signup">here</Link>
+                        </Trans>
                     </small>
                 </Grid>
                 <Grid item sm />

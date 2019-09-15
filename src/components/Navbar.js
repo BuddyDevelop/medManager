@@ -12,6 +12,9 @@ import AppBar from "@material-ui/core/Appbar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
 
+//translations
+import { Translation } from "react-i18next";
+
 class Navbar extends Component {
     handleLogout = () => {
         this.props.logout();
@@ -24,27 +27,27 @@ class Navbar extends Component {
                 <Toolbar className="nav-container">
                     {this.props.user.authenticated === false && (
                         <Button color="inherit" component={Link} to="/login">
-                            Login
+                            <Translation>{(t, { i18n }) => <p>{t("Login")}</p>}</Translation>
                         </Button>
                     )}
                     {this.props.user.authenticated === false && (
                         <Button color="inherit" component={Link} to="/signup">
-                            Signup
+                            <Translation>{(t, { i18n }) => <p>{t("Signup")}</p>}</Translation>
                         </Button>
                     )}
                     {this.props.user.authenticated && (
                         <Button color="inherit" component={Link} to="/profile">
-                            Profile
+                            <Translation>{(t, { i18n }) => <p>{t("Profile")}</p>}</Translation>
                         </Button>
                     )}
                     {this.props.user.authenticated && (
                         <Button color="inherit" component={Link} to="/users">
-                            Users
+                            <Translation>{(t, { i18n }) => <p>{t("Users")}</p>}</Translation>
                         </Button>
                     )}
                     {this.props.user.authenticated && (
                         <Button color="inherit" onClick={this.handleLogout}>
-                            Logout
+                            <Translation>{(t, { i18n }) => <p>{t("Logout")}</p>}</Translation>
                         </Button>
                     )}
                 </Toolbar>

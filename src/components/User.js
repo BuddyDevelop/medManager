@@ -10,6 +10,8 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
+import { Translation } from "react-i18next";
+
 const styles = {
     card: {
         minWidth: 200,
@@ -99,10 +101,14 @@ class User extends Component {
                 </CardContent>
                 <CardActions className={classes.cardActions}>
                     <Button onClick={this.handleMedicationOnClick} color="primary">
-                        Medications
+                        <Translation>
+                            {(t, { i18n }) => <span>{t("Medications")}</span>}
+                        </Translation>
                     </Button>
                     <Button onClick={this.handlePrescriptionsOnClick} color="primary">
-                        Prescriptions
+                        <Translation>
+                            {(t, { i18n }) => <span>{t("Prescriptions")}</span>}
+                        </Translation>
                     </Button>
                 </CardActions>
             </Card>

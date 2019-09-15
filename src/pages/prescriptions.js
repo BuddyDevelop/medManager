@@ -47,6 +47,9 @@ import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DayjsUtils from "@date-io/dayjs";
 import dayjs from "dayjs";
 
+//Translations
+import i18next from "i18next";
+
 const styles = {
     container: {
         display: "flex",
@@ -75,7 +78,7 @@ const RowDetail = ({ row: { medications } }) => {
     var elements = medications.map((elem, index) => {
         return (
             <div key={index}>
-                {elem.medication} | payment: {elem.payment}%
+                {elem.medication} | {i18next.t("Payment")} {elem.payment}%
             </div>
         );
     });
@@ -104,17 +107,23 @@ class prescriptions extends Component {
         this.state = {
             realizeToDate: dayjs().add(1, "month"),
             columns: [
-                { name: "created", title: "Date of issue" },
-                { name: "id", title: "Prescription number" },
-                { name: "doctorName", title: "Doctor" },
-                { name: "doctor", title: "Doctor email" },
-                { name: "realizeTo", title: "Date of realization to" }
+                { name: "created", title: i18next.t("Date of issue") },
+                { name: "id", title: i18next.t("Prescription number") },
+                { name: "doctorName", title: i18next.t("Doctor") },
+                { name: "doctor", title: i18next.t("Doctor email") },
+                { name: "realizeTo", title: i18next.t("Date of realization to") }
             ],
             rows: [],
             pageSize: 10,
             currentPage: 0,
             loading: true,
             success: "",
+            searchPanelLabel: {
+                searchPlaceholder: i18next.t("Search")
+            },
+            tableMessages: {
+                noData: i18next.t("No data")
+            },
             ...this.initialFormState
         };
 
@@ -256,7 +265,9 @@ class prescriptions extends Component {
             dialogVisiblility,
             errors,
             loading,
-            success
+            success,
+            searchPanelLabel,
+            tableMessages
         } = this.state;
 
         return (
@@ -268,7 +279,7 @@ class prescriptions extends Component {
                     color="secondary"
                     onClick={this.handleClickOpen}
                 >
-                    Add prescription
+                    {i18next.t("Add prescription")}
                 </Button>
                 <div>
                     {success && (
@@ -292,7 +303,7 @@ class prescriptions extends Component {
                         <IntegratedFiltering />
                         <IntegratedSorting />
                         <IntegratedPaging />
-                        <Table />
+                        <Table messages={tableMessages} />
                         <TableHeaderRow showSortingControls />
                         <TableRowDetail contentComponent={RowDetail} />
                         <PagingPanel />
@@ -308,11 +319,13 @@ class prescriptions extends Component {
                             {loading && <CirularProgress size={50} />}
                         </div>
                         <Toolbar />
-                        <SearchPanel />
+                        <SearchPanel messages={searchPanelLabel} />
                     </Grid>
                 </Paper>
                 <Dialog open={dialogVisiblility} onClose={this.cancelDialog}>
-                    <DialogTitle className={classes.textCentered}>Create prescription</DialogTitle>
+                    <DialogTitle className={classes.textCentered}>
+                        {i18next.t("Create prescription")}
+                    </DialogTitle>
                     {errors && typeof errors === "object" ? (
                         Object.entries(errors).map(([key, value]) => (
                             <Typography
@@ -335,7 +348,7 @@ class prescriptions extends Component {
                                 <DatePicker
                                     autoOk
                                     invalidLabel="Wrong date"
-                                    label="Realize to"
+                                    label={i18next.t("Realize to")}
                                     id="realizeToDate"
                                     name="realize-to-date"
                                     variant="inline"
@@ -354,7 +367,7 @@ class prescriptions extends Component {
                                 rowsMax="5"
                                 rows="5"
                                 variant="outlined"
-                                label="Medication informations"
+                                label={i18next.t("Medication informations")}
                                 margin="normal"
                             />
                             <TextField
@@ -366,7 +379,7 @@ class prescriptions extends Component {
                                 type="number"
                                 min="0"
                                 max="100"
-                                label="Payment"
+                                label={i18next.t("Payment prescription label")}
                                 margin="normal"
                                 InputProps={{
                                     endAdornment: <InputAdornment position="end">%</InputAdornment>
@@ -381,7 +394,7 @@ class prescriptions extends Component {
                                 rowsMax="5"
                                 rows="5"
                                 variant="outlined"
-                                label="Medication informations"
+                                label={i18next.t("Medication informations")}
                                 margin="normal"
                             />
                             <TextField
@@ -390,7 +403,7 @@ class prescriptions extends Component {
                                 id="payment2"
                                 name="payment2"
                                 variant="outlined"
-                                label="Payment"
+                                label={i18next.t("Payment prescription label")}
                                 margin="normal"
                                 InputProps={{
                                     endAdornment: <InputAdornment position="end">%</InputAdornment>
@@ -405,7 +418,7 @@ class prescriptions extends Component {
                                 rowsMax="5"
                                 rows="5"
                                 variant="outlined"
-                                label="Medication informations"
+                                label={i18next.t("Medication informations")}
                                 margin="normal"
                             />
                             <TextField
@@ -414,7 +427,7 @@ class prescriptions extends Component {
                                 id="payment3"
                                 name="payment3"
                                 variant="outlined"
-                                label="Payment"
+                                label={i18next.t("Payment prescription label")}
                                 margin="normal"
                                 InputProps={{
                                     endAdornment: <InputAdornment position="end">%</InputAdornment>
@@ -429,7 +442,7 @@ class prescriptions extends Component {
                                 rowsMax="5"
                                 rows="5"
                                 variant="outlined"
-                                label="Medication informations"
+                                label={i18next.t("Medication informations")}
                                 margin="normal"
                             />
                             <TextField
@@ -438,7 +451,7 @@ class prescriptions extends Component {
                                 id="payment4"
                                 name="payment4"
                                 variant="outlined"
-                                label="Payment"
+                                label={i18next.t("Payment prescription label")}
                                 margin="normal"
                                 InputProps={{
                                     endAdornment: <InputAdornment position="end">%</InputAdornment>
@@ -453,7 +466,7 @@ class prescriptions extends Component {
                                 rowsMax="5"
                                 rows="5"
                                 variant="outlined"
-                                label="Medication informations"
+                                label={i18next.t("Medication informations")}
                                 margin="normal"
                             />
                             <TextField
@@ -462,7 +475,7 @@ class prescriptions extends Component {
                                 id="payment5"
                                 name="payment5"
                                 variant="outlined"
-                                label="Payment"
+                                label={i18next.t("Payment prescription label")}
                                 margin="normal"
                                 InputProps={{
                                     endAdornment: <InputAdornment position="end">%</InputAdornment>
@@ -472,14 +485,14 @@ class prescriptions extends Component {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.hideDialog} color="primary" variant="outlined">
-                            Cancel
+                            {i18next.t("CancelButton")}
                         </Button>
                         <Button
                             onClick={this.savePrescription}
                             color="secondary"
                             variant="outlined"
                         >
-                            Save
+                            {i18next.t("SaveMedicationBtn")}
                         </Button>
                     </DialogActions>
                 </Dialog>

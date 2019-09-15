@@ -29,6 +29,13 @@ import prescriptions from "./pages/prescriptions";
 import Navbar from "./components/Navbar";
 import AuthRoute from "./util/AuthRoute.js";
 
+//MUI
+import Button from "@material-ui/core/Button";
+
+//translation configuration file
+// import i18n from "./i18n";
+import { Translation, withTranslation } from "react-i18next";
+
 const theme = createMuiTheme(themeFile);
 
 //check expiration date of token and redirect if it expired already
@@ -47,13 +54,28 @@ if (token) {
 
 class App extends Component {
     render() {
+        const { i18n } = this.props;
+
+        //change language
+        const changeLanguage = langCode => {
+            i18n.changeLanguage(langCode);
+        };
+
         return (
             <MuiThemeProvider theme={theme}>
                 <Provider store={store}>
                     <div className="App">
                         <Router>
                             <Navbar />
-                            <div className="container">
+                            <div className="container" style={{ margin: "75px auto 0 auto" }}>
+                                <div style={{ textAlign: "end", marginBottom: "5px" }}>
+                                    <Button color="inherit" onClick={() => changeLanguage("en")}>
+                                        en
+                                    </Button>
+                                    <Button color="inherit" onClick={() => changeLanguage("pl")}>
+                                        pl
+                                    </Button>
+                                </div>
                                 <Switch>
                                     <Route exact path="/users" component={users} />
                                     <AuthRoute exact path="/login" component={login} />
@@ -79,4 +101,4 @@ class App extends Component {
     }
 }
 
-export default App;
+export default withTranslation()(App);
