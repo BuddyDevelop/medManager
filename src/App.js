@@ -36,6 +36,9 @@ import Button from "@material-ui/core/Button";
 // import i18n from "./i18n";
 import { Translation, withTranslation } from "react-i18next";
 
+//for deployment
+axios.defaults.baseURL = "https://europe-west2-med-reminders.cloudfunctions.net/api";
+
 const theme = createMuiTheme(themeFile);
 
 //check expiration date of token and redirect if it expired already

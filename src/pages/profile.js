@@ -57,7 +57,7 @@ class profile extends Component {
                     <Divider />
                     <Container className={classes.containerStyles}>
                         <Typography className={classes.userDataTitle} variant="body2">
-                            {i18next.t("ColumnMedName")}:
+                            {i18next.t("Name")}:
                         </Typography>
                         <Typography variant="h6" color="primary">
                             {this.state.user.name}
