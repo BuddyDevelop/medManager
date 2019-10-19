@@ -34,7 +34,7 @@ import Button from "@material-ui/core/Button";
 
 //translation configuration file
 // import i18n from "./i18n";
-import { Translation, withTranslation } from "react-i18next";
+import { withTranslation } from "react-i18next";
 
 //for deployment
 axios.defaults.baseURL = "https://europe-west2-med-reminders.cloudfunctions.net/api";
